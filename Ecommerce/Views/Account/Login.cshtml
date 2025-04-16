@@ -1,0 +1,16 @@
+﻿@model Ecommerce.ViewModels.LoginViewModel
+<h2>Login</h2>
+
+<form asp-action="Login" method="post">
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <br />
+    <label asp-for="Password"></label>
+    <input asp-for="Password" type="password" />
+    <br />
+    <button type="submit">Login</button>
+    <div>
+        Do not have an account 
+        <a asp-controller="Account" asp-action="Register">Create One</a>
+        </div>
+</form>

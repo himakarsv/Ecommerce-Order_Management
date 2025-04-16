@@ -2,9 +2,9 @@
 
 namespace Ecommerce.Interfaces
 {
-    public interface IProductRepository:IRepository<Product>
+    public interface IProductRepository : IRepository<Product>
     {
         void Update(Product product);
-        void Save();
+        Task SaveAsync();
     }
 }

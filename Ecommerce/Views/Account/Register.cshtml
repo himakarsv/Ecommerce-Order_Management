@@ -1,0 +1,31 @@
+﻿@using Ecommerce.ViewModels
+@model Ecommerce.ViewModels.RegisterViewModel
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" />
+    <br />
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <br />
+    <label asp-for="Password"></label>
+    <input asp-for="Password" type="password" />
+    <br />
+    <label asp-for="ConfirmPassword"></label>
+    <input asp-for="ConfirmPassword" type="password" />
+    <br />
+    <label asp-for="Role"></label>
+    <select asp-for="Role">
+        <option>Customer</option>
+        <option>Admin</option>
+    </select>
+    <br />
+    <button type="submit">Register</button>
+
+    <div>
+        Already have an account
+        <a asp-controller="Account" asp-action="Login">Create One</a>
+    </div>
+
+</form>

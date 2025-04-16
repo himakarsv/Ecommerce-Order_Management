@@ -13,6 +13,8 @@ namespace Ecommerce.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,9 +41,19 @@ namespace Ecommerce.Data
             .OnDelete(DeleteBehavior.Cascade);
 
 
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Customer)
+                .WithMany()
+                .HasForeignKey(c => c.CustomerId);
+
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Product)
+                .WithMany()
+                .HasForeignKey(c => c.ProductId);
+
             modelBuilder.Entity<Order>()
-    .Property(o => o.Status)
-    .HasConversion<string>();
+                .Property(o => o.Status)
+                .HasConversion<string>();
 
 
 

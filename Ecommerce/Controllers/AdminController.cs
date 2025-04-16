@@ -1,9 +1,11 @@
 ﻿using Ecommerce.Interfaces;
 using Ecommerce.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Ecommerce.ViewModels;
+using Ecommerce.Attributes;
 namespace Ecommerce.Controllers
 {
+    [RoleAuthorize("Admin")]
     public class AdminController : Controller
     {
         private readonly IProductRepository _db;
@@ -12,9 +14,10 @@ namespace Ecommerce.Controllers
         {
             _db = db;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            List<Product> products= (List<Product>)_db.GetAll();
+            var products = await _db.GetAllAsync();
             return View(products);
         }
 
@@ -24,65 +27,70 @@ namespace Ecommerce.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product p)
-        {
-            if (p.Name == null)
-                ModelState.AddModelError("Name", "Product Name cannot be empty");
-            if (p.Price <=0)
-                ModelState.AddModelError("Price", "Product Price is Invalid.");
-            if (ModelState.IsValid)
-            {
-                _db.Add(p);
-                _db.Save();
-            return RedirectToAction("Index","Admin");
-            }
-            return View();
-
-        }
-        public IActionResult Edit(int? productID)
-        {
-            if (productID == 0 || productID == null) return NotFound();
-            Product p = _db.Get(u => u.ProductID == productID);
-            if (p == null) return NotFound();
-
-            return View(p);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Product p)
+        public async Task<IActionResult> Create(Product p)
         {
             if (p.Name == null)
                 ModelState.AddModelError("Name", "Product Name cannot be empty");
             if (p.Price <= 0)
                 ModelState.AddModelError("Price", "Product Price is Invalid.");
+
+            if (ModelState.IsValid)
+            {
+                await _db.AddAsync(p);
+                await _db.SaveAsync();
+                return RedirectToAction("Index", "Admin");
+            }
+
+            return View();
+        }
+
+        public async Task<IActionResult> Edit(int? productID)
+        {
+            if (productID == 0 || productID == null) return NotFound();
+
+            var product = await _db.GetAsync(u => u.ProductID == productID);
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Product p)
+        {
+            if (p.Name == null)
+                ModelState.AddModelError("Name", "Product Name cannot be empty");
+            if (p.Price <= 0)
+                ModelState.AddModelError("Price", "Product Price is Invalid.");
+
             if (ModelState.IsValid)
             {
                 if (p == null) return NotFound();
                 _db.Update(p);
-                _db.Save();
+                await _db.SaveAsync();
                 return RedirectToAction("Index", "Admin");
             }
+
             return View();
-            
         }
 
-        public IActionResult Delete(int? productID)
+        public async Task<IActionResult> Delete(int? productID)
         {
-            if(productID == 0 || productID == null) { return NotFound(); }
-            Product p = _db.Get(u => u.ProductID == productID);
-            if (p == null) return NotFound();
+            if (productID == 0 || productID == null) return NotFound();
 
-            return View(p);
+            var product = await _db.GetAsync(u => u.ProductID == productID);
+            if (product == null) return NotFound();
+
+            return View(product);
         }
 
         [HttpPost]
-        public IActionResult Delete(Product p)
+        public async Task<IActionResult> Delete(Product p)
         {
-            if(p == null) return NotFound();
+            if (p == null) return NotFound();
+
             _db.Remove(p);
-            _db.Save();
+            await _db.SaveAsync();
             return RedirectToAction("Index", "Admin");
         }
-
     }
 }

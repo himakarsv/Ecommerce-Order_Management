@@ -11,26 +11,22 @@ namespace Ecommerce.Repositories
 
         public Repository(ApplicationDbContext db)
         {
-            dbSet=db.Set<T>();
+            dbSet = db.Set<T>();
         }
 
-
-        public void Add(T entity)
+        public async Task AddAsync(T entity)
         {
-            dbSet.Add(entity);
+            await dbSet.AddAsync(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> filter)
         {
-            IQueryable<T> query = dbSet;
-            query = query.Where(filter);
-            return query.FirstOrDefault();
+            return await dbSet.FirstOrDefaultAsync(filter);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            IQueryable<T> query = dbSet;
-            return query.ToList();
+            return await dbSet.ToListAsync();
         }
 
         public void Remove(T entity)
