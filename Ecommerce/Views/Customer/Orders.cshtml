@@ -4,40 +4,41 @@
 
 @if (!Model.Any())
 {
-    <p>No orders found.</p>
+        <p>No orders found.</p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Items</th>
-                <th>Shipping Address</th>
-            </tr>
-        </thead>
-        <tbody>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Items</th>
+                    <th>Shipping Address</th>
+                </tr>
+            </thead>
+            <tbody>
             @foreach (var order in Model)
             {
-                <tr>
-                    <td>@order.OrderId</td>
-                    <td>@order.CreatedDate.ToString("yyyy-MM-dd")</td>
-                    <td>@order.Status</td>
-                    <td>
-                        <ul>
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>@order.CreatedDate.ToString("yyyy-MM-dd")</td>
+                            <td>@order.Status</td>
+                            <td>
+                                <ul>
                             @foreach (var product in order.Products)
                             {
-                                <li>@product.Name - ₹@product.Price</li>
+                                            <li>@product.Name - ₹@product.Price</li>
                             }
-                        </ul>
-                    </td>
-                    <td>
+                                </ul>
+                            </td>
+                            <td>
+      
                         @order.Address?.State, @order.Address?.City, @order.Address?.PostalCode
-                    </td>
-                </tr>
+                            </td>
+                        </tr>
             }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 }

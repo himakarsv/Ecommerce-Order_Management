@@ -3,16 +3,20 @@ using Ecommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Ecommerce.ViewModels;
 using Ecommerce.Attributes;
+using Ecommerce.Data;
+using Microsoft.EntityFrameworkCore;
 namespace Ecommerce.Controllers
 {
     [RoleAuthorize("Admin")]
     public class AdminController : Controller
     {
         private readonly IProductRepository _db;
+        private readonly ApplicationDbContext _context;
 
-        public AdminController(IProductRepository db)
+        public AdminController(IProductRepository db,ApplicationDbContext context)
         {
             _db = db;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -91,6 +95,15 @@ namespace Ecommerce.Controllers
             _db.Remove(p);
             await _db.SaveAsync();
             return RedirectToAction("Index", "Admin");
+        }
+
+        public async Task<IActionResult> Orders()
+        {
+            var orders = await _context.Orders
+           .Include(o => o.Customer)          
+           .Include(o => o.Products)          
+           .ToListAsync();
+            return View(orders);
         }
     }
 }

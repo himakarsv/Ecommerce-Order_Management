@@ -62,12 +62,37 @@ public class AccountController : Controller
     }
 
     // GET: /Account/Login
-    public IActionResult Login() => View();
+
+    public IActionResult Login()
+    {
+        if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Email"))){
+            string role = HttpContext.Session.GetString("role");
+            if (role == "Customer")
+                return RedirectToAction("Index", "Customer");
+
+            else if (role == "Admin")
+                    return RedirectToAction("Index", "Admin");
+                else
+                return RedirectToAction("Login", "Account");
+        }
+        return View();
+    }
 
     // POST: /Account/Login
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
+        if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Email"))){
+            string role = HttpContext.Session.GetString("role");
+            if (role == "Customer")
+                return RedirectToAction("Index", "Customer");
+
+            else if (role == "Admin")
+                return RedirectToAction("Index", "Admin");
+            else
+                return RedirectToAction("Login", "Account");
+        }
+
         if (ModelState.IsValid)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
@@ -93,6 +118,12 @@ public class AccountController : Controller
     public IActionResult AccessDenied()
     {
         return View();
+    }
+
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Login");
     }
 
 }

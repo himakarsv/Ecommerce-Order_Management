@@ -1,0 +1,45 @@
+﻿@model List<Ecommerce.Models.Order>
+
+<h2>All Orders</h2>
+
+@if (!Model.Any())
+{
+    <p>No orders found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Products</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.Customer?.Name (@order.Customer?.Email)</td>
+                    <td>
+                         @order.Address?.City, @order.Address?.State - @order.Address?.PostalCode
+                    </td>
+                    <td>@order.CreatedDate.ToString("yyyy-MM-dd")</td>
+                    <td>@order.Status</td>
+                    <td>
+                        <ul>
+                            @foreach (var product in order.Products)
+                            {
+                                <li>@product.Name - ₹@product.Price</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

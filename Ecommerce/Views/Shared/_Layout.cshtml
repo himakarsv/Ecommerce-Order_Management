@@ -10,6 +10,37 @@
 </head>
 <body>
     <header>
+        @{
+            var role = Context.Session.GetString("Role");
+            var email = Context.Session.GetString("Email");
+        }
+
+        <nav>
+            <ul>
+                @if (!string.IsNullOrEmpty(role))
+                {
+                    <li>Hello, @email (@role)</li>
+                    if(role=="Customer")
+                    {
+                        <li><a asp-controller="Customer" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Cart" asp-action="Index">Cart</a></li>
+                        <li><a asp-controller="Customer" asp-action="Orders">Orders</a></li>
+
+                    }
+                    else{
+                        <li><a asp-controller="Admin" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Admin" asp-action="Orders">View Orders</a></li>
+                    }
+                    <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                }
+                else
+                {
+                    <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+                    <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                }
+            </ul>
+        </nav>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ecommerce</a>
@@ -24,14 +55,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="">Admin</a>
-                        </li><li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        </li><li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="">Cart</a>
                         </li>
                     </ul>
                 </div>
