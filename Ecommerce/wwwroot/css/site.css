@@ -20,3 +20,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+.hero {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    padding: 80px 20px;
+    color: white;
+}
+
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        margin-top: 10px;
+    }
+
+.footer {
+    background-color: #222;
+  margin-bottom: 0rem;
+}

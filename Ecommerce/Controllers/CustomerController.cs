@@ -5,6 +5,8 @@ using Ecommerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Ecommerce.Attributes;
 using Microsoft.EntityFrameworkCore;
+using Ecommerce.Models.Enums;
+using Ecommerce.ViewModels;
 
 namespace Ecommerce.Controllers
 {
@@ -37,5 +39,56 @@ namespace Ecommerce.Controllers
             var products = await _db.GetAllAsync();
             return View(products);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> BuyNow(int productID)
+        {
+            var product = await _context.Products.FindAsync(productID);
+            if (product == null) return NotFound();
+
+            TempData["ProductId"] = productID;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> BuyNow(PlaceOrderViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+
+            var email = HttpContext.Session.GetString("Email");
+            var customer = await _context.Users.OfType<Customer>().FirstOrDefaultAsync(u => u.Email == email);
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            var productId = int.Parse(TempData["ProductId"].ToString());
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null) return NotFound();
+
+            Order newOrder = new Order
+            {
+                CustomerId = customer.UserId,
+                CreatedDate = DateTime.Now,
+                Status = OrderStatus.Pending,
+                Products = new List<Product> { product },
+                Address = new Address
+                {
+                    State = model.State,
+                    City = model.City,
+                    PostalCode = model.PostalCode
+                }
+            };
+
+
+            await _context.Orders.AddAsync(newOrder);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "Order placed successfully!";
+            return RedirectToAction("Orders");
+
+            return View();
+        }
+
+
+
+
     }
 }

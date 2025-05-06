@@ -48,7 +48,7 @@ namespace Ecommerce.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Customer"); // or Cart view
         }
-
+        
         // GET: /Cart
         public async Task<IActionResult> Index()
         {
