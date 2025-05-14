@@ -1,11 +1,22 @@
 using Ecommerce.Data;
 using Ecommerce.Interfaces;
 using Ecommerce.Repositories;
+using Serilog;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container.'
+
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/app_log.txt", rollingInterval: RollingInterval.Day) // logs daily
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+    
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); });

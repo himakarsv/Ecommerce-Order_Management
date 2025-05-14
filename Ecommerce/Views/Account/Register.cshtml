@@ -1,6 +1,9 @@
 ﻿@using Ecommerce.ViewModels
 @model Ecommerce.ViewModels.RegisterViewModel
+@await Html.PartialAsync("_Alerts")
+
 <h2>Register</h2>
+
 
 <form asp-action="Register" method="post">
     <label asp-for="Name"></label>

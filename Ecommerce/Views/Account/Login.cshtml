@@ -1,4 +1,6 @@
 ﻿@model Ecommerce.ViewModels.LoginViewModel
+@await Html.PartialAsync("_Alerts")
+
 <h2>Login</h2>
 
 <form asp-action="Login" method="post">

@@ -1,5 +1,5 @@
 ﻿@model List<Ecommerce.Models.Cart>
-
+@await Html.PartialAsync("_Alerts")
 <h2>Your Cart</h2>
 
 @if (!Model.Any())
