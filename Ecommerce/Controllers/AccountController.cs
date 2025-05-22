@@ -151,7 +151,63 @@ public class AccountController : Controller
     }
 
     // GET: /Account/Register
-    public IActionResult Register() => View();
+    public IActionResult Register() {
+
+
+        try
+        {
+            var email = HttpContext.Session.GetString("Email");
+            if (!string.IsNullOrEmpty(email))
+            {
+                var role= HttpContext.Session.GetString("Role");
+                _logger.LogInformation("User {Email} already logged in as {Role}", email, role);
+
+                return role switch
+                {
+                    "Customer" => RedirectToAction("Index", "Customer"),
+                    "Admin" => RedirectToAction("Index", "Admin"),
+                    _ => RedirectToAction("Login")
+                };
+            }
+        return View(); 
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during Login GET request");
+            return RedirectToAction("AccessDenied");
+        }
+
+
+
+    }
+
+
+    public IActionResult Login()
+    {
+        try
+        {
+            var email = HttpContext.Session.GetString("Email");
+            if (!string.IsNullOrEmpty(email))
+            {
+                var role = HttpContext.Session.GetString("Role");
+                _logger.LogInformation("User {Email} already logged in as {Role}", email, role);
+
+                return role switch
+                {
+                    "Customer" => RedirectToAction("Index", "Customer"),
+                    "Admin" => RedirectToAction("Index", "Admin"),
+                    _ => RedirectToAction("Login")
+                };
+            }
+
+            return View();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during Login GET request");
+            return RedirectToAction("AccessDenied");
+        }
+    }
 
     // POST: /Account/Register
     [HttpPost]
@@ -159,6 +215,11 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid)
             return View(model);
+        if (model.Role.ToLower() == "admin")
+        {
+            ModelState.AddModelError("", "Unauthorized role selection.");
+            return View(model);
+        }
 
         try
         {
@@ -205,33 +266,7 @@ public class AccountController : Controller
         }
     }
 
-    // GET: /Account/Login
-    public IActionResult Login()
-    {
-        try
-        {
-            var email = HttpContext.Session.GetString("Email");
-            if (!string.IsNullOrEmpty(email))
-            {
-                var role = HttpContext.Session.GetString("Role");
-                _logger.LogInformation("User {Email} already logged in as {Role}", email, role);
-
-                return role switch
-                {
-                    "Customer" => RedirectToAction("Index", "Customer"),
-                    "Admin" => RedirectToAction("Index", "Admin"),
-                    _ => RedirectToAction("Login")
-                };
-            }
-
-            return View();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error during Login GET request");
-            return RedirectToAction("AccessDenied");
-        }
-    }
+   
 
     // POST: /Account/Login
     [HttpPost]

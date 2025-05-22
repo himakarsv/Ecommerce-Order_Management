@@ -150,6 +150,40 @@ namespace Ecommerce.Controllers
             }
         }
 
+        public IActionResult CreateAdmin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdmin(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            if(await _context.Users.AnyAsync(u=>u.Email==model.Email) )
+            {
+                ModelState.AddModelError("", "User already exists");
+                return View(model);
+            }
+
+            string hashPassword= BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+            var newAdmin = new Admin()
+            {
+                Name = model.Name,
+                Email = model.Email,
+                Password = hashPassword,
+                Role="Admin",
+            };
+
+            await _context.Users.AddAsync(newAdmin);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "Admin Created Successfully";
+
+            return RedirectToAction("Index","Admin");
+        }
+
         public IActionResult Create() => View();
 
         [HttpPost]

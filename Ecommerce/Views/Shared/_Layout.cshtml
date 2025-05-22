@@ -79,17 +79,51 @@
 @* </body> *@
 @* </html> *@
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] - Ecommerce</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Fixed missing quote -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" /> <!-- ✅ Add this -->
+    <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" />
+
+    <style>
+        /* Make body a flex container for sticky footer */
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1 0 auto; /* Grow to fill available space */
+        }
+
+        footer.footer {
+            flex-shrink: 0; /* Prevent footer from shrinking */
+        }
+
+        /* Hero Section styling */
+        .hero {
+            background: url('/images/hero-bg.jpg') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -98,7 +132,7 @@
             var email = Context.Session.GetString("Email");
         }
 
-        <!-- 🌐 Modern Navbar -->
+        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Ecommerce</a>
@@ -132,6 +166,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Admin" asp-action="Orders">All Orders</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Admin" asp-action="CreateAdmin" class="btn btn-warning">Create Admin</a>
+                                </li>
                             }
                         }
                         else
@@ -157,21 +194,20 @@
         </nav>
     </header>
 
-    <!-- ✨ Hero Section -->
-    @* <section class="hero"> *@
-    @*     <div class="hero-text text-center text-white"> *@
-    @*         <h1>Welcome to Ecommerce Platform</h1> *@
-    @*         <p>Your one-stop shop for everything tech!</p> *@
-    @*     </div> *@
-    @* </section> *@
+    <!-- Hero Section -->
+    <section class="hero mb-5">
+        <div class="text-center px-4">
+            <h1 class="display-4 text-black fw-bold">Welcome to Ecommerce Platform</h1>
+            <p class="lead text-black ">Your one-stop shop for everything tech!</p>
+             @* <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg mt-3">Get Started</a> *@
+        </div>
+    </section>
 
-    <div class="container mt-4">
-        <main role="main" class="pb-4">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="container pb-4">
+        @RenderBody()
+    </main>
 
-    <footer class="footer bg-dark text-light text-center py-3">
+    <footer class="footer bg-dark text-light text-center py-3 mt-auto">
         <div class="container">
             &copy; 2025 - Ecommerce | Built with ASP.NET MVC
         </div>
@@ -183,3 +219,6 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+

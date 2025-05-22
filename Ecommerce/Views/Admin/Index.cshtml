@@ -1,45 +1,93 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+@*     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860 *@
 
-@await Html.PartialAsync("_Alerts")
+
+@* @await Html.PartialAsync("_Alerts") *@
+
+@* @model List<Product> *@
+@* @{ *@
+@*     <div class="cont"> *@
+@*         <h1>Products List</h1> *@
+@*         <a asp-controller="Admin" asp-action="Create"> *@
+@*             <button type="button" class="btn btn-primary">Create New</button> *@
+@*         </a> *@
+@*     </div> *@
+@*     <table> *@
+        
+@*         <th>ProductID</th> *@
+@*         <th>Name</th> *@
+@*         <th>Price</th> *@
+       
+@*         <tbody> *@
+@*             @foreach (var i in Model) *@
+@*             { *@
+@*                 <tr> *@
+@*                     <td>@i.ProductID</td> *@
+
+@*                     <td>@i.Name</td> *@
+
+@*                     <td>@i.Price</td> *@
+@*                     <td> *@
+@*                         <div class="w-75 btn-group" role="group"> *@
+@*                             <a asp-controller="Admin" asp-action="Edit" asp-route-productID="@i.ProductID" class="btn btn-primary mx-2"> *@
+@*                                 <i class="bi bi-pencil-square"></i>Edit *@
+@*                             </a> *@
+@*                             <div class="w-75 btn-group" role="group"> *@
+@*                                 <a asp-controller="Admin" asp-action="Delete" asp-route-productID="@i.ProductID" class="btn btn-danger mx-2"> *@
+@*                                     <i class="bi bi-trash-fill"></i>Delete *@
+@*                                 </a> *@
+@*                             </div> *@
+@*                     </td> *@
+@*                 </tr> *@
+@*             } *@
+@*         </tbody> *@
+@*     </table> *@
+@* } *@
+
+
 
 @model List<Product>
-@{
-    <div class="cont">
-        <h1>Products List</h1>
-        <a asp-controller="Admin" asp-action="Create">
-            <button type="button" class="btn btn-primary">Create New</button>
+@await Html.PartialAsync("_Alerts")
+
+<div class="max-w-6xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Products List</h1>
+        <a asp-controller="Admin" asp-action="Create"
+           class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition">
+            Create New
         </a>
     </div>
-    <table>
-        
-        <th>ProductID</th>
-        <th>Name</th>
-        <th>Price</th>
-       
-        <tbody>
-            @foreach (var i in Model)
-            {
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
                 <tr>
-                    <td>@i.ProductID</td>
-
-                    <td>@i.Name</td>
-
-                    <td>@i.Price</td>
-                    <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Admin" asp-action="Edit" asp-route-productID="@i.ProductID" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i>Edit
-                            </a>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Admin" asp-action="Delete" asp-route-productID="@i.ProductID" class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash-fill"></i>Delete
-                                </a>
-                            </div>
-                    </td>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ProductID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">@product.ProductID</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">@product.Name</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">$@product.Price</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                            <a asp-controller="Admin" asp-action="Edit" asp-route-productID="@product.ProductID"
+                               class="inline-block bg-black text-white px-4 py-2 ">
+                                Edit
+                            </a>
+                            <a asp-controller="Admin" asp-action="Delete" asp-route-productID="@product.ProductID"
+                               class="inline-block bg-dark text-white px-4 py-2  ">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

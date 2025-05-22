@@ -1,0 +1,44 @@
+﻿@model Ecommerce.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Create Admin";
+}
+
+<h2>Create New Admin</h2>
+
+@await Html.PartialAsync("_Alerts") <!-- Optional alert component -->
+
+<form asp-action="CreateAdmin" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <!-- Forcefully set role to Admin -->
+    <input type="hidden" asp-for="Role" value="Admin" />
+
+    <button type="submit" class="btn btn-primary">Create Admin</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

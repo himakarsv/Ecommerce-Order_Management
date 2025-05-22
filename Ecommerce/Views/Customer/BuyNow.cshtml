@@ -1,26 +1,54 @@
-﻿@model Ecommerce.ViewModels.PlaceOrderViewModel
-@await Html.PartialAsync("_Alerts")
-<h2>Shipping Address</h2>
+﻿@* @model Ecommerce.ViewModels.PlaceOrderViewModel *@
+@* @await Html.PartialAsync("_Alerts") *@
+@* <h2>Shipping Address</h2> *@
 
-<form asp-action="BuyNow" method="post">
-    <div class="form-group">
-        <label asp-for="State"></label>
+@* <form asp-action="BuyNow" method="post"> *@
+@*     <div class="form-group"> *@
+@*         <label asp-for="State"></label> *@
+@*         <input asp-for="State" class="form-control" /> *@
+@*         <span asp-validation-for="State" class="text-danger"></span> *@
+@*     </div> *@
+
+@*     <div class="form-group"> *@
+@*         <label asp-for="City"></label> *@
+@*         <input asp-for="City" class="form-control" /> *@
+@*         <span asp-validation-for="City" class="text-danger"></span> *@
+@*     </div> *@
+
+
+@*     <div class="form-group"> *@
+@*         <label asp-for="PostalCode"></label> *@
+@*         <input asp-for="PostalCode" class="form-control" /> *@
+@*         <span asp-validation-for="PostalCode" class="text-danger"></span> *@
+@*     </div> *@
+
+@*     <button type="submit" class="btn btn-primary mt-2">Place Order</button> *@
+@* </form> *@
+
+
+@model Ecommerce.ViewModels.PlaceOrderViewModel
+@await Html.PartialAsync("_Alerts")
+
+<h2 class="mb-4">Shipping Address</h2>
+
+<form asp-action="BuyNow" method="post" novalidate>
+    <div class="mb-3">
+        <label asp-for="State" class="form-label"></label>
         <input asp-for="State" class="form-control" />
         <span asp-validation-for="State" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="City"></label>
+    <div class="mb-3">
+        <label asp-for="City" class="form-label"></label>
         <input asp-for="City" class="form-control" />
         <span asp-validation-for="City" class="text-danger"></span>
     </div>
 
-
-    <div class="form-group">
-        <label asp-for="PostalCode"></label>
+    <div class="mb-3">
+        <label asp-for="PostalCode" class="form-label"></label>
         <input asp-for="PostalCode" class="form-control" />
         <span asp-validation-for="PostalCode" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Place Order</button>
+    <button type="submit" class="btn btn-primary">Place Order</button>
 </form>
